@@ -13,5 +13,5 @@
           inherit system;
           config.allowUnfree = true;
         };
-      in { devShell.${system} = pkgs.mkShell { packages = with pkgs; [ ]; }; });
+      in { devShell = pkgs.mkShell { packages = with pkgs; [ hello ]; }; });
 }
