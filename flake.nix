@@ -11,8 +11,15 @@
         wazzup
       '';
     };
+    templates.direnv = {
+      path = ./direnv;
+      description = "My main way to init new projects atm";
+      welcomeText = ''
+        wazzup
+      '';
+    };
 
-    templates.default = self.templates.devenv;
+    templates.default = self.templates.direnv;
 
   };
 }
