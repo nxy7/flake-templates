@@ -1,7 +1,7 @@
 {
   description = "A very basic flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flakeUtils.url = "github:numtide/flake-utils";
     nix2container.url = "github:nlewo/nix2container";
     devenv.url = "github:cachix/devenv";
