@@ -8,14 +8,21 @@
       description =
         "Flake based project using devenv for maintaining dependencies";
       welcomeText = ''
-        wazzup
+        Sup
       '';
     };
     templates.direnv = {
       path = ./direnv;
       description = "My main way to init new projects atm";
       welcomeText = ''
-        wazzup
+        Sup
+      '';
+    };
+    templates.golang = {
+      path = ./golang-service;
+      description = "Golang web service template";
+      welcomeText = ''
+        Hello
       '';
     };
 
