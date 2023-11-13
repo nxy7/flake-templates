@@ -1,6 +1,6 @@
 package handlers
 
-import "golang-template/pkg/storage"
+import "golang-template/src/storage"
 
 type HandlerCtx struct {
 	db *storage.Storage

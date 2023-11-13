@@ -1,7 +1,7 @@
 package api
 
 import (
-	"golang-template/pkg/api/handlers"
+	"golang-template/src/api/handlers"
 
 	"github.com/labstack/echo/v4"
 )

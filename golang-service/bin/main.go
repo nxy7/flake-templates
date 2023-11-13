@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"golang-template/pkg/api"
+	"golang-template/src/api"
 )
 
 func main() {
