@@ -9,8 +9,13 @@ import (
 )
 
 func TestServer(t *testing.T) {
+
 	e := MakeDefaultServer()
-	go e.Start(":11111")
+	go func() {
+		if err := e.Start(":11111"); err != nil {
+			panic(err)
+		}
+	}()
 
 	t.Run("endpoint=/health", func(t *testing.T) {
 		req, err := http.Get("http://localhost:11111/health")

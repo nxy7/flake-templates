@@ -11,7 +11,8 @@
       perSystem = { config, system, ... }:
         let pkgs = import nixpkgs { inherit system; };
         in {
-          devShells.default = pkgs.mkShell { packages = with pkgs; [ go ]; };
+          devShells.default =
+            pkgs.mkShell { packages = with pkgs; [ go golangci-lint ]; };
         };
     };
 }

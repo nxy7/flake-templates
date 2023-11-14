@@ -3,7 +3,7 @@ package handlers
 import "golang-template/internal/storage"
 
 type HandlerCtx struct {
-	db *storage.Storage
+	db storage.Storage
 }
 
 func FromEnv() HandlerCtx {

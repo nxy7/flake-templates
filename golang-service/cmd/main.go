@@ -10,5 +10,7 @@ func main() {
 	fmt.Println("You might want to change module name to something more descriptive")
 
 	s := api.MakeDefaultServer()
-	s.Start(":1234")
+	if err := s.Start(":1234"); err != nil {
+		panic(err)
+	}
 }
