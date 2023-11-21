@@ -12,7 +12,7 @@
         let pkgs = import nixpkgs { inherit system; };
         in {
           devShells.default =
-            pkgs.mkShell { packages = with pkgs; [ go golangci-lint ]; };
+            pkgs.mkShell { packages = with pkgs; [ just go golangci-lint ]; };
         };
     };
 }
