@@ -6,6 +6,6 @@ type HandlerCtx struct {
 	db storage.Storage
 }
 
-func FromEnv() HandlerCtx {
+func CtxFromEnv() HandlerCtx {
 	return HandlerCtx{}
 }

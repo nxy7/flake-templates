@@ -8,7 +8,7 @@ import (
 
 // Returns server using default handler created from env variables
 func MakeDefaultServer() *echo.Echo {
-	h := handlers.FromEnv()
+	h := handlers.CtxFromEnv()
 	return MakeServer(h)
 }
 
