@@ -36,8 +36,6 @@
               };
             };
         })
-        ./backend
-        ./frontend
       ];
 
       systems = [ "x86_64-linux" ];
