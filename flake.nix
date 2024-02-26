@@ -25,6 +25,13 @@
         Hello
       '';
     };
+    templates.rust = {
+      path = ./rust;
+      description = "Flake with basic rust tools";
+      welcomeText = ''
+        Hello
+      '';
+    };
 
     templates.default = self.templates.direnv;
 
