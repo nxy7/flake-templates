@@ -41,7 +41,12 @@
       systems = [ "x86_64-linux" ];
       perSystem = { config, system, pkgs, ... }: {
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ rustToolchain ];
+          packages = with pkgs; [
+            rustToolchain
+            cargo-nextest
+            cargo-watch
+            just
+          ];
           shellHook = ''
             export PKG_CONFIG_PATH="${pkgs.openssl.dev}/lib/pkgconfig"
           '';
