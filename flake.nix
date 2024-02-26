@@ -1,7 +1,7 @@
 {
   description = "Project templates that make initializing new projects easier";
 
-  outputs = { self, nixpkgs }: {
+  outputs = _: {
 
     templates.devenv = {
       path = ./devenv;
@@ -32,8 +32,6 @@
         Hello
       '';
     };
-
-    templates.default = self.templates.direnv;
 
   };
 }
