@@ -1,7 +1,7 @@
 {
   description = "Rust project flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     fenix = {
       url = "github:nix-community/fenix";
