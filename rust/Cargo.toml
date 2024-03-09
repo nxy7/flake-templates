@@ -1,0 +1,17 @@
+[package]
+name = "rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = { version = "1" }
+anyhow = { version = "1" }
+tracing = { version = "0.1" }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tokio = { version = "1.36.0", features = [
+  "full",
+  "sync",
+  "time",
+  "macros",
+  "rt-multi-thread",
+] }
