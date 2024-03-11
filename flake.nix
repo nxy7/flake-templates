@@ -25,6 +25,20 @@
         Hello
       '';
     };
+    templates.bun = {
+      path = ./bun;
+      description = "Bun project starter";
+      welcomeText = ''
+        Hello
+      '';
+    };
+    templates.nest = {
+      path = ./nest;
+      description = "NestJS project starter";
+      welcomeText = ''
+        Hello
+      '';
+    };
     templates.rust = {
       path = ./rust;
       description = "Flake with basic rust tools";
