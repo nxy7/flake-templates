@@ -6,12 +6,19 @@
     nix2container.url = "github:nlewo/nix2container";
   };
 
-  outputs = { flake-parts, nixpkgs, ... }@inputs:
+  outputs =
+    { flake-parts, nixpkgs, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
-      perSystem = { config, system, ... }:
-        let pkgs = import nixpkgs { inherit system; };
-        in {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      perSystem =
+        { system, ... }:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
           devShells.default = pkgs.mkShell { packages = with pkgs; [ just ]; };
         };
     };
