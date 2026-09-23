@@ -9,7 +9,7 @@ export default function Guard(props: RouteSectionProps) {
     <Suspense fallback={<p class="empty">Ładowanie…</p>}>
       <Show when={user() !== undefined}>
         <Show when={user()} fallback={<Navigate href="/login" />}>
-          {props.children}
+          <div class="narrow">{props.children}</div>
         </Show>
       </Show>
     </Suspense>

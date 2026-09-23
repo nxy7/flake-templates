@@ -12,7 +12,7 @@ type AppFactory<A extends RequestableApp> = (db: DbHandle["db"]) => A;
 export const TEST_ENV = {
   NODE_ENV: "test",
   DATABASE_URL: "pglite://memory",
-  API_URL: "http://localhost:3000",
+  API_URL: "http://localhost:4000",
   BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-000",
   // vite preview (E2E) + vite dev
   TRUSTED_ORIGINS: "http://localhost:4173,http://localhost:5173",

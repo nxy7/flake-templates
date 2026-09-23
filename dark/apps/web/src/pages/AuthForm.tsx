@@ -21,8 +21,8 @@ export function AuthForm(props: { mode: Mode }) {
   const submission = useSubmission(submitAuth);
   const isRegister = () => props.mode === "register";
   return (
-    <section class="stack">
-      <h1>{isRegister() ? "Załóż konto" : "Zaloguj się"}</h1>
+    <section class="narrow stack">
+      <h1 class="display small">{isRegister() ? "Załóż konto" : "Zaloguj się"}</h1>
       <form class="stack" method="post" action={submitAuth.with(props.mode)}>
         <Show when={isRegister()}>
           <label>

@@ -41,16 +41,3 @@ test("edycja i usunięcie notatki", async ({ page }) => {
   await list.getByRole("button", { name: "Usuń" }).click();
   await expect(page.getByText("Brak notatek")).toBeVisible();
 });
-
-test("/app bez sesji przekierowuje do logowania", async ({ page }) => {
-  await page.goto("/app");
-  await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { name: "Zaloguj się" })).toBeVisible();
-});
-
-test("strona marketingowa jest prerenderowana (HTML bez JS)", async ({ request }) => {
-  const html = await (await request.get("/")).text();
-  expect(html).toContain("Notatki, które są zawsze pod ręką");
-  const about = await (await request.get("/about/")).text();
-  expect(about).toContain("O projekcie");
-});

@@ -1,3 +1,5 @@
+import "@fontsource-variable/newsreader";
+import "@fontsource-variable/public-sans";
 import "./styles.css";
 import { Capacitor } from "@capacitor/core";
 import { Router } from "@solidjs/router";

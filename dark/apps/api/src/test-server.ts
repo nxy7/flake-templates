@@ -8,10 +8,13 @@ import { createApp } from "./app";
 import { loadEnv } from "./env";
 import { createTestRoutes } from "./test-routes";
 
+// Dev/E2E: domyślnie :4000 (3000 bywa zajęty przez inne narzędzia). Produkcja: PORT z env (3000).
+const port = process.env.PORT ?? "4000";
 const env = loadEnv({
   ...TEST_ENV,
-  API_URL: `http://localhost:${process.env.PORT ?? 3000}`,
+  API_URL: `http://localhost:${port}`,
   ...process.env,
+  PORT: port,
 });
 if (env.NODE_ENV !== "test") {
   console.error("test-server.ts wymaga NODE_ENV=test");

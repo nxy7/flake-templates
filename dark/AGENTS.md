@@ -31,7 +31,9 @@ Wszystkie komendy uruchamiaj w `nix develop` (albo przez direnv: `.envrc`).
 - Typy i walidacja: tylko `packages/shared`. Front importuje typy API przez Hono RPC (`AppType`), nie pisze ich ręcznie.
 - Schemat bazy: tylko `packages/db/src/schema.ts`. Migracje wyłącznie generowane (`bun run db:generate`), nigdy ręczna edycja wygenerowanych plików.
 - Klient bazy: tylko `createDb()` z `@app/db`. Kod aplikacji dostaje `Db` i nie sprawdza, czy to Postgres czy PGlite.
-- Adres API we froncie: tylko `apps/web/src/lib/config.ts`. Routing: tylko `apps/web/src/routes.tsx`.
+- Adres API we froncie: tylko `apps/web/src/lib/config.ts`. Routing i metadane stron: tylko `apps/web/src/routes.tsx`.
+- Teksty marketingowe: tylko `apps/web/src/content/` (nie wpisuj copy w komponenty). Wygląd: tokeny w `:root` w `styles.css`
+  (nie wpisuj kolorów/krojów w komponenty). Prawda produktowa i ton: `PRODUCT.md`. Bez wymyślonych liczb i opinii.
 - Jeden runner testów: `bun test` (unit + integracja) i Playwright (E2E). Bez Vitest/Jest.
 - Jeden linter/formatter: Biome. Wersje narzędzi: `flake.nix` + `bun.lock`.
 

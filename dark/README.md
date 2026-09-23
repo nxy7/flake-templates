@@ -14,7 +14,7 @@ bun install
 bunx playwright install chromium
 bun run verify
 ```
-Dev: `bun run dev` (API na PGlite :3000 + Vite :5173). Bez Dockera i bez Postgresa.
+Dev: `bun run dev` (API na PGlite :4000 + Vite :5173). Bez Dockera i bez Postgresa.
 
 ## `bun run verify`
 Jedyna definicja gotowości. Etapy (pierwszy błąd = exit != 0):
@@ -59,7 +59,19 @@ docs/             solid.md (wzorce frontu), testing.md
 4. Actions → **infra** → `staging`, potem `prod`. `*_SSH_HOST` = output `server_ipv4`.
 5. Klucze R2 dla backupu (bucket `<name>-<env>-backups`) wpisz do `*_ENV_FILE`.
 
+## Landing: jak przerobić
+| Co | Gdzie |
+|---|---|
+| Nazwa marki, nawigacja, stopka | `apps/web/src/content/site.ts` |
+| Cała treść landingu (hero, funkcje, kroki, FAQ, CTA, title/description) | `apps/web/src/content/landing.ts` — sekcję wyłączasz przez `null` |
+| Kolory, kroje, promienie, cienie, szerokości | blok `:root` w `apps/web/src/styles.css` |
+| Kroje pisma | `@fontsource-variable/*` w `apps/web/src/main.tsx` + `--font-display` / `--font-text` |
+| Ikony | `apps/web/src/components/Icon.tsx` (24×24, obrys 1.5) |
+| Nowa strona marketingowa | `apps/web/src/routes.tsx` z `prerender: true` + `title`/`description` |
+E2E landingu (`apps/web/e2e/landing.spec.ts`) czyta treść z `landing.ts`, więc przeżywa zmianę tekstów.
+Produktowa prawda (ton, odbiorcy, ograniczenia): `PRODUCT.md`.
+
 ## Nowa aplikacja z szablonu
-Zmień: `appId`/`appName` (`apps/web/capacitor.config.ts`, też `apps/web/ios-sign.sh`), `APP_NAME`
-(`apps/web/src/components/Layout.tsx`), `name` w `infra/envs/*` i `apps/web/wrangler.jsonc`.
+Zmień: `appId`/`appName` (`apps/web/capacitor.config.ts`, też `apps/web/ios-sign.sh`), treść w
+`apps/web/src/content/`, `PRODUCT.md`, `name` w `infra/envs/*` i `apps/web/wrangler.jsonc`.
 Potem SPEC.md → PLAN.md → E2E → implementacja wg wzorca `notes`.

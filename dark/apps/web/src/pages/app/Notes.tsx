@@ -28,8 +28,8 @@ export default function Notes() {
 
   return (
     <section>
-      <div class="row" style={{ "justify-content": "space-between", "align-items": "center" }}>
-        <h1>Twoje notatki</h1>
+      <div class="app-head">
+        <h1 class="display small">Twoje notatki</h1>
         <button class="btn secondary" type="button" onClick={signOut}>
           Wyloguj
         </button>
@@ -83,7 +83,7 @@ function NoteItem(props: { note: Note }) {
           <>
             <h3>{props.note.title}</h3>
             <Show when={props.note.body}>
-              <p>{props.note.body}</p>
+              <p class="note-body">{props.note.body}</p>
             </Show>
             <div class="row">
               <button class="btn secondary" type="button" onClick={() => setEditing(true)}>
