@@ -30,9 +30,12 @@ jobs:
         run: |
           [ -n "$TF_VAR_state_passphrase" ] && [ -n "$TF_VAR_hcloud_token" ] && [ -n "$AWS_ACCESS_KEY_ID" ] \
             || { echo "::error::Brak sekretów infrastruktury (patrz README: Sekrety)"; exit 1; }
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - name: init + plan + apply
         working-directory: infra/envs/${{ inputs.env }}
         run: |

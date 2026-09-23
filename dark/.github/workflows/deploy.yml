@@ -21,7 +21,7 @@ jobs:
       HOST: ${{ secrets[format('{0}_SSH_HOST', inputs.prefix)] }}
       API_URL: ${{ vars[format('{0}_API_URL', inputs.prefix)] }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: klucz SSH
         env:
           KEY: ${{ secrets[format('{0}_SSH_KEY', inputs.prefix)] }}
@@ -66,9 +66,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - run: nix develop .#light -c bun install --frozen-lockfile
       - name: build + wrangler deploy
         env:

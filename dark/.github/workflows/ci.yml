@@ -55,19 +55,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - run: nix develop -c bun install --frozen-lockfile
       - run: nix develop -c bash -c 'cd apps/web && bunx playwright install --with-deps chromium'
       - run: nix develop -c bun run verify
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report-pglite
           path: apps/web/playwright-report
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-debug-apk
           path: apps/web/android/app/build/outputs/apk/debug/*.apk
@@ -87,9 +90,12 @@ jobs:
     env:
       PG_ADMIN: postgres://postgres:pg@localhost:5432/postgres
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - run: nix develop .#light -c bun install --frozen-lockfile
       - name: migracje na czystej bazie Postgres
         run: DATABASE_URL="$PG_ADMIN" nix develop .#light -c bun run db:check
@@ -99,7 +105,7 @@ jobs:
           E2E_DATABASE_URL="$PG_ADMIN" nix develop .#light -c bun run e2e
       - name: test backupu (pg_dump -> odtworzenie do świeżej bazy -> sprawdzenie danych)
         run: ADMIN_DATABASE_URL="$PG_ADMIN" nix develop .#light -c bun run backup:test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report-postgres
@@ -111,9 +117,12 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - run: nix develop .#light -c bun install --frozen-lockfile
       - run: nix develop .#light -c bash -c 'cd apps/web && bun run build && bunx cap sync ios'
       - name: xcodebuild (symulator, CODE_SIGNING_ALLOWED=NO)
@@ -129,7 +138,7 @@ jobs:
           PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
           TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
         run: bash apps/web/ios-sign.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: needs.secrets.outputs.ios_signing == 'true' && startsWith(github.ref, 'refs/tags/v')
         with:
           name: ios-ipa
@@ -143,9 +152,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - run: nix develop -c bun install --frozen-lockfile
       - env:
           KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -158,7 +170,7 @@ jobs:
           nix develop -c bash -c 'cd apps/web && bun run build && bunx cap build android \
             --keystorepath "$RUNNER_TEMP/release.keystore" --keystorepass "$KEYSTORE_PASSWORD" \
             --keystorealias "$KEY_ALIAS" --keystorealiaspass "$KEY_PASSWORD" --androidreleasetype AAB'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-release-aab
           path: apps/web/android/app/build/outputs/bundle/release/*.aab
@@ -173,9 +185,12 @@ jobs:
       matrix:
         env: [staging, prod]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+          gc-max-store-size-linux: 8G
       - name: plan
         env:
           TF_VAR_state_passphrase: ${{ secrets.TOFU_STATE_PASSPHRASE }}
@@ -209,7 +224,7 @@ jobs:
       backup_image: ${{ steps.names.outputs.backup }}
       tag: ${{ steps.names.outputs.tag }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - id: names
         run: |
           owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
@@ -217,13 +232,13 @@ jobs:
           echo "api=ghcr.io/$owner/$repo-api" >> "$GITHUB_OUTPUT"
           echo "backup=ghcr.io/$owner/$repo-backup" >> "$GITHUB_OUTPUT"
           echo "tag=sha-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           file: apps/api/Dockerfile
@@ -233,7 +248,7 @@ jobs:
             ${{ steps.names.outputs.api }}:${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'main' }}
           cache-from: type=gha,scope=api
           cache-to: type=gha,mode=max,scope=api
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: deploy/backup
           push: true
@@ -283,7 +298,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
           pattern: "{android-*,ios-ipa}"
