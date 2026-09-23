@@ -34,8 +34,20 @@ const state = useSubmission(createNote); // state.pending, state.error
 - Linki: `<A href>`; nawigacja w kodzie: `useNavigate()`; przekierowanie w akcji: `throw redirect("/app")`.
 - Ochrona tras: layout `pages/app/Guard.tsx` (wszystko pod `/app`).
 
+## i18n (Paraglide JS) — jedyny wzorzec
+- Komunikaty: `apps/web/messages/en.json` (bazowy) i `pl.json`. Nowy język = plik + wpis w `project.inlang/settings.json`.
+- Użycie: `import { m } from "../paraglide/messages.js"; <h1>{m.notes_title()}</h1>`. Parametry: `m.hello({ name })`.
+- Konfiguracja tylko w `paraglide.config.ts` (Vite i `bun run --cwd apps/web i18n`). `src/paraglide/` jest generowany — nie edytuj, nie commituj.
+- Strategia `url`: `/about` = en, `/pl/about` = pl. Router dostaje `base` z `routerBase()`; linki bez prefiksu.
+- Zmiana języka: zwykły `<a href={hrefForLocale(path, locale)} rel="external">` (pełna nawigacja), nie `setLocale` w środku sesji.
+- Teksty zależne od języka w modułach (np. `content/landing.ts`, tytuły tras) muszą być FUNKCJAMI (`landing()`), nie stałymi
+  — prerender renderuje wszystkie języki w jednym procesie.
+- Komunikaty z API/Zod/Better Auth nie trafiają do UI wprost; pokazuj własny komunikat `m.*`.
+- Testy E2E biorą teksty z `e2e/messages.ts` (czyta te same JSON-y).
+
 ## Prerender (bez SSR w runtime)
-- `vite build --ssr src/entry-prerender.tsx` + `scripts/prerender.ts` wstrzykuje HTML do `dist/<ścieżka>/index.html`.
+- `vite build --ssr src/entry-prerender.tsx` + `scripts/prerender.ts` wstrzykuje HTML do `dist/<ścieżka>/index.html`
+  dla każdego języka (`dist/pl/<ścieżka>/index.html`), z `<html lang>`, `<title>` i description.
 - Klient **nie hydratuje** — `render()` zastępuje prerenderowany DOM. Dlatego strony prerender
   nie mogą zależeć od stanu przeglądarki podczas renderu (`window`, `localStorage` → tylko w `onMount`).
 - Fallback SPA: nieznana ścieżka dostaje `index.html`; skrypt w `<head>` ukrywa obcą treść do renderu.

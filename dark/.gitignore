@@ -16,3 +16,6 @@ coverage/
 *.tfstate.*
 *.tfplan
 .terraform.lock.hcl.bak
+# Paraglide (generowane z messages/*.json)
+apps/web/src/paraglide/
+apps/web/project.inlang/cache/

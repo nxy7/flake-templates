@@ -1,17 +1,24 @@
-/** Marka i nawigacja. Podmień przy starcie nowej aplikacji (razem z landing.ts i tokenami w styles.css). */
-export const site = {
-  name: "Notatnik",
-  description: "Notatki w przeglądarce, na Androidzie i iOS — jedno konto, te same notatki wszędzie.",
+import { m } from "../paraglide/messages.js";
+
+/**
+ * Marka i nawigacja. Nazwa marki jest stała (nie tłumaczymy jej); teksty idą przez Paraglide
+ * (messages/<locale>.json). Funkcja, bo komunikaty zależą od bieżącego języka.
+ */
+export const BRAND = "Notebook";
+
+export const site = () => ({
+  name: BRAND,
+  description: m.site_description(),
   nav: [
-    { label: "O projekcie", href: "/about" },
-    { label: "Zaloguj się", href: "/login" },
+    { label: m.nav_about(), href: "/about" },
+    { label: m.nav_login(), href: "/login" },
   ],
-  appCta: { label: "Otwórz aplikację", href: "/app" },
+  appCta: { label: m.nav_open_app(), href: "/app" },
   footer: {
-    note: "Zbudowane z factory-template: Bun, Hono, Solid i Capacitor.",
+    note: m.footer_note(),
     links: [
-      { label: "O projekcie", href: "/about" },
-      { label: "Załóż konto", href: "/register" },
+      { label: m.nav_about(), href: "/about" },
+      { label: m.footer_register(), href: "/register" },
     ],
   },
-} as const;
+});

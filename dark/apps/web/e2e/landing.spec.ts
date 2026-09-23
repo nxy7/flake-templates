@@ -1,28 +1,26 @@
 import { expect, test } from "@app/testing/playwright";
-import { landing } from "../src/content/landing";
+import { en } from "./messages";
 
-/** Landing: treść pochodzi z content/landing.ts, więc test działa po podmianie treści. */
-test("landing jest prerenderowany: treść, title i description są w HTML bez JS", async ({ request }) => {
+/** Landing (angielski, domyślny): treść z messages/en.json, więc test przeżywa zmianę tekstów. */
+test("landing is prerendered: content, title and description are in the HTML without JS", async ({ request }) => {
   const html = await (await request.get("/")).text();
-  expect(html).toContain(landing.hero.lead);
-  expect(html).toContain(`<title>${landing.meta.title}</title>`);
-  expect(html).toContain(`content="${landing.meta.description}"`);
+  expect(html).toContain('<html lang="en"');
+  expect(html).toContain(en.hero_lead);
+  expect(html).toContain(`<title>${en.meta_home_title}</title>`);
+  expect(html).toContain(`content="${en.meta_home_description}"`);
   const about = await (await request.get("/about/")).text();
-  expect(about).toContain("O projekcie");
+  expect(about).toContain(en.about_body);
 });
 
-test("landing: nagłówek, sekcje i CTA prowadzą do rejestracji", async ({ page }) => {
+test("landing: heading, sections and CTA lead to sign-up", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(landing.hero.title);
-  for (const title of [landing.features?.title, landing.steps?.title, landing.faq?.title]) {
-    if (title) await expect(page.getByRole("heading", { name: title })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.hero_title!);
+  for (const title of [en.features_title, en.steps_title, en.faq_title]) {
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
   }
-  const faq = landing.faq?.items[0];
-  if (faq) {
-    await page.getByText(faq.q).click();
-    await expect(page.getByText(faq.a)).toBeVisible();
-  }
-  await page.getByRole("link", { name: landing.hero.primary.label }).first().click();
+  await page.getByText(en.faq_1_q!).click();
+  await expect(page.getByText(en.faq_1_a!)).toBeVisible();
+  await page.getByRole("link", { name: en.hero_primary }).first().click();
   await expect(page).toHaveURL(/\/register$/);
-  await expect(page).toHaveTitle(/Załóż konto/);
+  await expect(page).toHaveTitle(en.meta_register_title!);
 });

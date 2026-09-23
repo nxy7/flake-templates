@@ -15,7 +15,9 @@
       "!**/migrations/meta",
       "!**/.terraform",
       "!**/playwright-report",
-      "!**/test-results"
+      "!**/test-results",
+      "!**/src/paraglide",
+      "!**/project.inlang/cache"
     ]
   },
   "formatter": {

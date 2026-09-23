@@ -6,6 +6,7 @@ import { createNote, deleteNote, listNotes, updateNote } from "../../data/notes"
 import { getSession } from "../../data/session";
 import { authClient } from "../../lib/api";
 import { clearToken } from "../../lib/token";
+import { m } from "../../paraglide/messages.js";
 
 /** WZORZEC EKRANU: lista (createAsync) + formularz (action) + edycja inline. */
 export default function Notes() {
@@ -29,32 +30,32 @@ export default function Notes() {
   return (
     <section>
       <div class="app-head">
-        <h1 class="display small">Twoje notatki</h1>
+        <h1 class="display small">{m.notes_title()}</h1>
         <button class="btn secondary" type="button" onClick={signOut}>
-          Wyloguj
+          {m.notes_sign_out()}
         </button>
       </div>
       <form class="stack" ref={formRef} onSubmit={onCreate}>
         <label>
-          Tytuł
+          {m.notes_field_title()}
           <input name="title" required maxLength={NOTE_TITLE_MAX} />
         </label>
         <label>
-          Treść
+          {m.notes_field_body()}
           <textarea name="body" />
         </label>
         <Show when={adding.error}>
           <p class="error" role="alert">
-            Nie udało się zapisać notatki.
+            {m.notes_save_error()}
           </p>
         </Show>
         <button class="btn" type="submit" disabled={adding.pending}>
-          Dodaj notatkę
+          {m.notes_add()}
         </button>
       </form>
-      <Suspense fallback={<p class="empty">Ładowanie…</p>}>
-        <ul class="notes" aria-label="Notatki">
-          <For each={notes()} fallback={<li class="empty">Brak notatek. Dodaj pierwszą.</li>}>
+      <Suspense fallback={<p class="empty">{m.loading()}</p>}>
+        <ul class="notes" aria-label={m.notes_list_label()}>
+          <For each={notes()} fallback={<li class="empty">{m.notes_empty()}</li>}>
             {(note) => <NoteItem note={note} />}
           </For>
         </ul>
@@ -87,10 +88,10 @@ function NoteItem(props: { note: Note }) {
             </Show>
             <div class="row">
               <button class="btn secondary" type="button" onClick={() => setEditing(true)}>
-                Edytuj
+                {m.notes_edit()}
               </button>
               <button class="btn danger" type="button" onClick={() => remove(props.note.id)}>
-                Usuń
+                {m.notes_delete()}
               </button>
             </div>
           </>
@@ -98,19 +99,19 @@ function NoteItem(props: { note: Note }) {
       >
         <form class="stack" onSubmit={onSave}>
           <label>
-            Tytuł
+            {m.notes_field_title()}
             <input name="title" required maxLength={NOTE_TITLE_MAX} value={props.note.title} />
           </label>
           <label>
-            Treść
+            {m.notes_field_body()}
             <textarea name="body" value={props.note.body} />
           </label>
           <div class="row">
             <button class="btn" type="submit">
-              Zapisz
+              {m.notes_save()}
             </button>
             <button class="btn secondary" type="button" onClick={() => setEditing(false)}>
-              Anuluj
+              {m.notes_cancel()}
             </button>
           </div>
         </form>

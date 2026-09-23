@@ -1,20 +1,23 @@
 import type { IconName } from "../components/Icon";
+import { m } from "../paraglide/messages.js";
 
 /**
- * CAŁA treść landingu. Sekcję wyłączasz, ustawiając ją na null.
- * Zasada: bez wymyślonych liczb i opinii — tylko prawdziwe fakty o produkcie (PRODUCT.md).
+ * Struktura landingu. Teksty: messages/<locale>.json (Paraglide), tu tylko ich układ.
+ * Sekcję wyłączasz, ustawiając ją na null. Bez wymyślonych liczb i opinii (PRODUCT.md).
  */
 export type Landing = {
   meta: { title: string; description: string };
   hero: {
     title: string;
-    /** Fragment tytułu podkreślony "atramentem". Musi występować w title. */
+    /** Fragment tytułu podkreślony "atramentem". Musi występować w title (w każdym języku). */
     highlight: string;
     lead: string;
     primary: { label: string; href: string };
     secondary?: { label: string; href: string };
+    sampleLabel: string;
     /** Przykładowe notatki na "kartce" obok nagłówka (ilustracja, nie dane). */
     sample: { title: string; body: string }[];
+    newNote: string;
   };
   features: { title: string; items: { icon: IconName; title: string; body: string }[] } | null;
   steps: { title: string; items: { title: string; body: string }[] } | null;
@@ -22,64 +25,44 @@ export type Landing = {
   cta: { title: string; body: string; action: { label: string; href: string } } | null;
 };
 
-export const landing: Landing = {
-  meta: {
-    title: "Notatnik — notatki, które są zawsze pod ręką",
-    description: "Zapisuj myśli w przeglądarce, na Androidzie i iOS. Jedno konto, te same notatki wszędzie.",
-  },
+export const landing = (): Landing => ({
+  meta: { title: m.meta_home_title(), description: m.meta_home_description() },
   hero: {
-    title: "Notatki, które są zawsze pod ręką",
-    highlight: "pod ręką",
-    lead: "Zapisz myśl na telefonie, popraw ją przy biurku. Jedno konto, te same notatki w przeglądarce, na Androidzie i iOS.",
-    primary: { label: "Załóż konto", href: "/register" },
-    secondary: { label: "Mam już konto", href: "/login" },
+    title: m.hero_title(),
+    highlight: m.hero_highlight(),
+    lead: m.hero_lead(),
+    primary: { label: m.hero_primary(), href: "/register" },
+    secondary: { label: m.hero_secondary(), href: "/login" },
+    sampleLabel: m.hero_sample_label(),
     sample: [
-      { title: "Zakupy na sobotę", body: "chleb, pomidory, kawa ziarnista" },
-      { title: "Pomysł na wstęp", body: "Zacząć od pytania, nie od definicji." },
+      { title: m.hero_sample_1_title(), body: m.hero_sample_1_body() },
+      { title: m.hero_sample_2_title(), body: m.hero_sample_2_body() },
     ],
+    newNote: m.hero_new_note(),
   },
   features: {
-    title: "Mało funkcji, każda dopracowana",
+    title: m.features_title(),
     items: [
-      {
-        icon: "devices",
-        title: "Jedna aplikacja, trzy ekrany",
-        body: "Ten sam kod działa w przeglądarce, na Androidzie i na iOS. Nie ma wersji gorszej.",
-      },
-      {
-        icon: "lock",
-        title: "Twoje notatki są tylko twoje",
-        body: "Każda notatka należy do konta. Nikt inny jej nie zobaczy ani nie zmieni.",
-      },
-      {
-        icon: "pen",
-        title: "Pisanie bez ceremonii",
-        body: "Tytuł, treść, zapisz. Edycja w miejscu, bez przechodzenia między ekranami.",
-      },
+      { icon: "devices", title: m.feature_1_title(), body: m.feature_1_body() },
+      { icon: "lock", title: m.feature_2_title(), body: m.feature_2_body() },
+      { icon: "pen", title: m.feature_3_title(), body: m.feature_3_body() },
     ],
   },
   steps: {
-    title: "Jak zacząć",
+    title: m.steps_title(),
     items: [
-      { title: "Załóż konto", body: "Wystarczy email i hasło." },
-      { title: "Dodaj notatkę", body: "Tytuł jest wymagany, treść — jak chcesz." },
-      { title: "Otwórz gdziekolwiek", body: "Zaloguj się na innym urządzeniu i pisz dalej." },
+      { title: m.step_1_title(), body: m.step_1_body() },
+      { title: m.step_2_title(), body: m.step_2_body() },
+      { title: m.step_3_title(), body: m.step_3_body() },
     ],
   },
   faq: {
-    title: "Pytania",
+    title: m.faq_title(),
     items: [
-      { q: "Czy to kosztuje?", a: "To aplikacja demonstracyjna szablonu. Konto jest bezpłatne." },
-      {
-        q: "Gdzie są przechowywane notatki?",
-        a: "W bazie PostgreSQL na serwerze aplikacji, z nocną kopią zapasową.",
-      },
-      { q: "Czy mogę usunąć notatkę?", a: "Tak. Usunięcie jest natychmiastowe i nieodwracalne." },
+      { q: m.faq_1_q(), a: m.faq_1_a() },
+      { q: m.faq_2_q(), a: m.faq_2_a() },
+      { q: m.faq_3_q(), a: m.faq_3_a() },
     ],
   },
-  cta: {
-    title: "Pierwsza notatka zajmie minutę",
-    body: "Załóż konto i zapisz to, o czym właśnie myślisz.",
-    action: { label: "Załóż konto", href: "/register" },
-  },
-};
+  cta: { title: m.cta_title(), body: m.cta_body(), action: { label: m.cta_action(), href: "/register" } },
+});

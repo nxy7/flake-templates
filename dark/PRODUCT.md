@@ -18,12 +18,15 @@ działa w przeglądarce, na Androidzie i iOS. Notatki należą do użytkownika (
 | `/login`, `/register` | Operate | Wejście do aplikacji |
 | `/app` notatki | Operate | Dodaj / edytuj / usuń notatkę |
 
+## Języki
+Angielski (domyślny, bez prefiksu URL) i polski (`/pl/...`). Teksty wyłącznie w Paraglide (`apps/web/messages`).
+
 ## Ton
-Spokojny, rzeczowy, po polsku. Bez obietnic liczbowych i bez wymyślonych opinii klientów.
+Spokojny, rzeczowy. Bez obietnic liczbowych i bez wymyślonych opinii klientów.
 Żadnych fałszywych dowodów społecznych: sekcje z liczbami/opiniami tylko z prawdziwymi danymi.
 
 ## Ograniczenia
-- Treść landingu w jednym pliku: `apps/web/src/content/landing.ts`. Wygląd w tokenach: `apps/web/src/styles.css` (`:root`).
+- Teksty w `apps/web/messages/<locale>.json`, układ landingu w `apps/web/src/content/landing.ts`. Wygląd w tokenach: `apps/web/src/styles.css` (`:root`).
 - Strony marketingowe muszą renderować się bez JS (prerender), działać bez stanu przeglądarki.
 - Dostępność: kontrast AA, pełna obsługa klawiaturą, semantyczne nagłówki (E2E wybiera po rolach).
 

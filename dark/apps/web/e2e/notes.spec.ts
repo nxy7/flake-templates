@@ -1,43 +1,44 @@
 import { expect, test } from "@app/testing/playwright";
+import type { Page } from "@playwright/test";
+import { en } from "./messages";
 
 /**
  * Kryteria akceptacji przekroju "notes" (SPEC: scenariusze E2E).
  * Nowa funkcja = nowy plik *.spec.ts z kryteriów w SPEC.md, pisany PRZED implementacją.
  */
-test("rejestracja -> dodanie notatki -> odświeżenie -> notatka jest", async ({ page }) => {
+const register = async (page: Page, email: string) => {
   await page.goto("/register");
-  await page.getByLabel("Email").fill("e2e@example.test");
-  await page.getByLabel("Hasło").fill("password123");
-  await page.getByRole("button", { name: "Utwórz konto" }).click();
+  await page.getByLabel(en.auth_email!).fill(email);
+  await page.getByLabel(en.auth_password!).fill("password123");
+  await page.getByRole("button", { name: en.auth_submit_register }).click();
+  await expect(page.getByRole("heading", { name: en.notes_title })).toBeVisible();
+};
 
-  await expect(page.getByRole("heading", { name: "Twoje notatki" })).toBeVisible();
-  await expect(page.getByText("Brak notatek")).toBeVisible();
+test("register -> add a note -> reload -> the note is there", async ({ page }) => {
+  await register(page, "e2e@example.test");
+  await expect(page.getByText(en.notes_empty!)).toBeVisible();
 
-  await page.getByLabel("Tytuł").fill("Kupić mleko");
-  await page.getByLabel("Treść").fill("2 litry");
-  await page.getByRole("button", { name: "Dodaj notatkę" }).click();
-  const list = page.getByRole("list", { name: "Notatki" });
-  await expect(list.getByRole("heading", { name: "Kupić mleko" })).toBeVisible();
+  await page.getByLabel(en.notes_field_title!).fill("Buy milk");
+  await page.getByLabel(en.notes_field_body!).fill("2 litres");
+  await page.getByRole("button", { name: en.notes_add }).click();
+  const list = page.getByRole("list", { name: en.notes_list_label });
+  await expect(list.getByRole("heading", { name: "Buy milk" })).toBeVisible();
 
   await page.reload();
-  await expect(list.getByRole("heading", { name: "Kupić mleko" })).toBeVisible();
-  await expect(list.getByText("2 litry")).toBeVisible();
+  await expect(list.getByRole("heading", { name: "Buy milk" })).toBeVisible();
+  await expect(list.getByText("2 litres")).toBeVisible();
 });
 
-test("edycja i usunięcie notatki", async ({ page }) => {
-  await page.goto("/register");
-  await page.getByLabel("Email").fill("edit@example.test");
-  await page.getByLabel("Hasło").fill("password123");
-  await page.getByRole("button", { name: "Utwórz konto" }).click();
+test("edit and delete a note", async ({ page }) => {
+  await register(page, "edit@example.test");
+  await page.getByLabel(en.notes_field_title!).fill("Version 1");
+  await page.getByRole("button", { name: en.notes_add }).click();
+  const list = page.getByRole("list", { name: en.notes_list_label });
+  await list.getByRole("button", { name: en.notes_edit }).click();
+  await list.getByLabel(en.notes_field_title!).fill("Version 2");
+  await list.getByRole("button", { name: en.notes_save }).click();
+  await expect(list.getByRole("heading", { name: "Version 2" })).toBeVisible();
 
-  await page.getByLabel("Tytuł").fill("Wersja 1");
-  await page.getByRole("button", { name: "Dodaj notatkę" }).click();
-  const list = page.getByRole("list", { name: "Notatki" });
-  await list.getByRole("button", { name: "Edytuj" }).click();
-  await list.getByLabel("Tytuł").fill("Wersja 2");
-  await list.getByRole("button", { name: "Zapisz" }).click();
-  await expect(list.getByRole("heading", { name: "Wersja 2" })).toBeVisible();
-
-  await list.getByRole("button", { name: "Usuń" }).click();
-  await expect(page.getByText("Brak notatek")).toBeVisible();
+  await list.getByRole("button", { name: en.notes_delete }).click();
+  await expect(page.getByText(en.notes_empty!)).toBeVisible();
 });

@@ -3,7 +3,7 @@
 Szablon "dark factory": jedna baza kodu → web (Cloudflare Workers), Android i iOS (Capacitor),
 API na VPS (Hetzner + docker compose). Reguły pracy agentów: [AGENTS.md](AGENTS.md).
 
-**Stack:** Bun · Hono (+ RPC) · Drizzle + PostgreSQL · Better Auth · Zod · Solid 1.9 + Vite ·
+**Stack:** Bun · Hono (+ RPC) · Drizzle + PostgreSQL · Better Auth · Zod · Solid 1.9 + Vite · Paraglide JS (i18n, domyślnie en) ·
 Capacitor 8 · Playwright · PGlite (tylko testy) · OpenTofu · Biome · Nix.
 
 ## Quickstart (5 komend)
@@ -62,13 +62,16 @@ docs/             solid.md (wzorce frontu), testing.md
 ## Landing: jak przerobić
 | Co | Gdzie |
 |---|---|
-| Nazwa marki, nawigacja, stopka | `apps/web/src/content/site.ts` |
-| Cała treść landingu (hero, funkcje, kroki, FAQ, CTA, title/description) | `apps/web/src/content/landing.ts` — sekcję wyłączasz przez `null` |
+| Wszystkie teksty (en = domyślny, pl) | `apps/web/messages/<locale>.json` (Paraglide JS) |
+| Nowy język | plik `messages/<locale>.json` + `locales` w `apps/web/project.inlang/settings.json` |
+| Nazwa marki, układ nawigacji i stopki | `apps/web/src/content/site.ts` |
+| Układ landingu (które sekcje, ile pozycji, ikony) | `apps/web/src/content/landing.ts` — sekcję wyłączasz przez `null` |
 | Kolory, kroje, promienie, cienie, szerokości | blok `:root` w `apps/web/src/styles.css` |
 | Kroje pisma | `@fontsource-variable/*` w `apps/web/src/main.tsx` + `--font-display` / `--font-text` |
 | Ikony | `apps/web/src/components/Icon.tsx` (24×24, obrys 1.5) |
 | Nowa strona marketingowa | `apps/web/src/routes.tsx` z `prerender: true` + `title`/`description` |
-E2E landingu (`apps/web/e2e/landing.spec.ts`) czyta treść z `landing.ts`, więc przeżywa zmianę tekstów.
+Adresy: `/` i `/about` po angielsku, `/pl/` i `/pl/about` po polsku (osobny prerenderowany HTML na język).
+E2E czytają teksty z `messages/*.json` (`apps/web/e2e/messages.ts`), więc przeżywają zmianę treści.
 Produktowa prawda (ton, odbiorcy, ograniczenia): `PRODUCT.md`.
 
 ## Nowa aplikacja z szablonu

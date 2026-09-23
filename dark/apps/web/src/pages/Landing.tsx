@@ -4,11 +4,12 @@ import { Icon } from "../components/Icon";
 import { landing } from "../content/landing";
 
 /**
- * Landing (prerender). Struktura tutaj, treść w content/landing.ts, wygląd w tokenach styles.css.
+ * Landing (prerender, każdy język). Układ tutaj, teksty w messages/*.json (przez content/landing.ts),
+ * wygląd w tokenach styles.css.
  * Sekcja z wartością null w treści nie renderuje się.
  */
 export default function Landing() {
-  const { hero, features, steps, faq, cta } = landing;
+  const { hero, features, steps, faq, cta } = landing();
   const [before, after] = hero.title.split(hero.highlight);
 
   return (
@@ -39,7 +40,7 @@ export default function Landing() {
             </Show>
           </div>
         </div>
-        <figure class="sheet" aria-label="Przykładowe notatki">
+        <figure class="sheet" aria-label={hero.sampleLabel}>
           <For each={hero.sample}>
             {(n) => (
               <div class="sheet-note">
@@ -49,7 +50,7 @@ export default function Landing() {
             )}
           </For>
           <figcaption class="sheet-caption">
-            <Icon name="plus" class="icon small" /> Nowa notatka
+            <Icon name="plus" class="icon small" /> {hero.newNote}
           </figcaption>
         </figure>
       </section>

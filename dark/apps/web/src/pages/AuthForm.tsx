@@ -2,6 +2,7 @@ import { A, action, redirect, revalidate, useSubmission } from "@solidjs/router"
 import { Show } from "solid-js";
 import { getSession } from "../data/session";
 import { authClient } from "../lib/api";
+import { m } from "../paraglide/messages.js";
 
 type Mode = "login" | "register";
 
@@ -12,7 +13,8 @@ const submitAuth = action(async (mode: Mode, form: FormData) => {
     mode === "register"
       ? await authClient.signUp.email({ email, password, name: String(form.get("name") || email) })
       : await authClient.signIn.email({ email, password });
-  if (error) throw new Error(error.message ?? "Nie udało się zalogować");
+  // Komunikat z naszych tłumaczeń, nie z Better Auth (ten jest zawsze po angielsku).
+  if (error) throw new Error(mode === "register" ? m.auth_register_error() : m.auth_login_error());
   await revalidate(getSession.key);
   throw redirect("/app");
 }, "auth");
@@ -22,20 +24,20 @@ export function AuthForm(props: { mode: Mode }) {
   const isRegister = () => props.mode === "register";
   return (
     <section class="narrow stack">
-      <h1 class="display small">{isRegister() ? "Załóż konto" : "Zaloguj się"}</h1>
+      <h1 class="display small">{isRegister() ? m.auth_register_title() : m.auth_login_title()}</h1>
       <form class="stack" method="post" action={submitAuth.with(props.mode)}>
         <Show when={isRegister()}>
           <label>
-            Imię
+            {m.auth_name()}
             <input name="name" autocomplete="name" />
           </label>
         </Show>
         <label>
-          Email
+          {m.auth_email()}
           <input name="email" type="email" required autocomplete="email" />
         </label>
         <label>
-          Hasło
+          {m.auth_password()}
           <input
             name="password"
             type="password"
@@ -52,12 +54,14 @@ export function AuthForm(props: { mode: Mode }) {
           )}
         </Show>
         <button class="btn" type="submit" disabled={submission.pending}>
-          {isRegister() ? "Utwórz konto" : "Zaloguj"}
+          {isRegister() ? m.auth_submit_register() : m.auth_submit_login()}
         </button>
       </form>
       <p>
-        {isRegister() ? "Masz konto? " : "Nie masz konta? "}
-        <A href={isRegister() ? "/login" : "/register"}>{isRegister() ? "Zaloguj się" : "Zarejestruj się"}</A>
+        {isRegister() ? m.auth_have_account() : m.auth_no_account()}{" "}
+        <A href={isRegister() ? "/login" : "/register"}>
+          {isRegister() ? m.auth_goto_login() : m.auth_goto_register()}
+        </A>
       </p>
     </section>
   );

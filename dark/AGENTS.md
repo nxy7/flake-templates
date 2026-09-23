@@ -32,7 +32,10 @@ Wszystkie komendy uruchamiaj w `nix develop` (albo przez direnv: `.envrc`).
 - Schemat bazy: tylko `packages/db/src/schema.ts`. Migracje wyłącznie generowane (`bun run db:generate`), nigdy ręczna edycja wygenerowanych plików.
 - Klient bazy: tylko `createDb()` z `@app/db`. Kod aplikacji dostaje `Db` i nie sprawdza, czy to Postgres czy PGlite.
 - Adres API we froncie: tylko `apps/web/src/lib/config.ts`. Routing i metadane stron: tylko `apps/web/src/routes.tsx`.
-- Teksty marketingowe: tylko `apps/web/src/content/` (nie wpisuj copy w komponenty). Wygląd: tokeny w `:root` w `styles.css`
+- Teksty UI: WYŁĄCZNIE Paraglide JS (`apps/web/messages/<locale>.json`, wywołanie `m.klucz()`); nigdy tekst wpisany w JSX.
+  Angielski (`en`) jest językiem bazowym; każdy klucz musi istnieć we wszystkich językach (test `src/lib/i18n.test.ts`).
+  Linki piszemy bez prefiksu języka (`<A href="/app">`) — prefiks `/pl` to `base` routera (`src/lib/i18n.ts`).
+- Układ treści marketingowej: `apps/web/src/content/` (strukturę, nie teksty). Wygląd: tokeny w `:root` w `styles.css`
   (nie wpisuj kolorów/krojów w komponenty). Prawda produktowa i ton: `PRODUCT.md`. Bez wymyślonych liczb i opinii.
 - Jeden runner testów: `bun test` (unit + integracja) i Playwright (E2E). Bez Vitest/Jest.
 - Jeden linter/formatter: Biome. Wersje narzędzi: `flake.nix` + `bun.lock`.
@@ -45,7 +48,7 @@ Wszystkie komendy uruchamiaj w `nix develop` (albo przez direnv: `.envrc`).
 - `/__test/*` istnieje tylko w `apps/api/src/test-server.ts`. Nigdy nie importuj `test-*.ts` z kodu produkcyjnego (build to sprawdza).
 
 ## Frontend
-Wzorce i zakazane API: `docs/solid.md`. Stack: Solid 1.9 + @solidjs/router 1.x. Nie używaj API z Solid 2.0 ani Reacta.
+Wzorce, i18n i zakazane API: `docs/solid.md`. Stack: Solid 1.9 + @solidjs/router 1.x. Nie używaj API z Solid 2.0 ani Reacta.
 
 ## Zakazy
 - Żadnych sekretów w repo (`.env` jest w .gitignore; wzór: `deploy/.env.example`). Sekrety tylko w GitHub Secrets.
