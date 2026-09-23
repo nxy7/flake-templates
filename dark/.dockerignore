@@ -1,0 +1,12 @@
+**/node_modules
+**/dist
+**/dist-ssr
+.git
+.direnv
+apps/web/android
+apps/web/ios
+**/test-results
+**/playwright-report
+infra
+**/.terraform
+.env
