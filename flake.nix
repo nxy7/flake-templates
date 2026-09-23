@@ -11,6 +11,15 @@
         Sup
       '';
     };
+    templates.dark = {
+      path = ./dark;
+      description =
+        "Dark factory: Bun + Hono + Drizzle + Better Auth + Solid + Capacitor + OpenTofu (web, Android, iOS)";
+      welcomeText = ''
+        Szablon "dark factory". Start: direnv allow && bun install && bun run verify.
+        Reguły dla agentów: AGENTS.md.
+      '';
+    };
     templates.direnv = {
       path = ./direnv;
       description = "My main way to init new projects atm";
