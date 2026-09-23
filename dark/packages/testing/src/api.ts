@@ -8,12 +8,14 @@ import { freshTestDb } from "./db";
 type RequestableApp = { request: (path: string, init?: RequestInit) => Response | Promise<Response> };
 type AppFactory<A extends RequestableApp> = (db: DbHandle["db"]) => A;
 
+/** Jedyne źródło konfiguracji testowej (integracja + test-server dla E2E/dev). */
 export const TEST_ENV = {
   NODE_ENV: "test",
   DATABASE_URL: "pglite://memory",
   API_URL: "http://localhost:3000",
   BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-000",
-  TRUSTED_ORIGINS: "http://localhost:4173",
+  // vite preview (E2E) + vite dev
+  TRUSTED_ORIGINS: "http://localhost:4173,http://localhost:5173",
 } as const;
 
 export type TestUser = { id: string; email: string; headers: Record<string, string> };

@@ -1,0 +1,18 @@
+// Front na Cloudflare Workers Static Assets (bez skryptu): SPA fallback + statyczny prerender.
+// Deploy wyłącznie z CI: wrangler deploy --env <staging|production> --domain <WEB_DOMAIN>
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "factory-web",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Nieznana ścieżka -> /index.html (router klienta). NIE goły bucket R2 (brak fallbacku SPA).
+    "not_found_handling": "single-page-application",
+    // /about -> /about/ -> dist/about/index.html (prerender)
+    "html_handling": "auto-trailing-slash"
+  },
+  "env": {
+    "staging": { "name": "factory-web-staging" },
+    "production": { "name": "factory-web-prod" }
+  }
+}

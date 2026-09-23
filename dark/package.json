@@ -17,7 +17,7 @@
     "db:generate": "bun run --cwd packages/db generate",
     "db:check": "bun run --cwd packages/db check",
     "e2e": "bun run --cwd apps/web e2e",
-    "build": "bun run --cwd apps/api build && bun run --cwd apps/web build",
+    "build": "bun run --cwd apps/api build && bun run --cwd apps/web build && bun run --cwd apps/web check:worker",
     "android": "bun run --cwd apps/web android:debug",
     "infra:check": "bash infra/check.sh",
     "backup:test": "bash deploy/backup/test-restore.sh",

@@ -1,4 +1,3 @@
-import { relations } from "drizzle-orm";
 import { boolean, index, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 /**
@@ -87,10 +86,5 @@ export const notes = pgTable(
   (t) => [index("notes_user_id_created_at_idx").on(t.userId, t.createdAt)],
 );
 
-export const userRelations = relations(user, ({ many }) => ({ notes: many(notes) }));
-export const notesRelations = relations(notes, ({ one }) => ({
-  user: one(user, { fields: [notes.userId], references: [user.id] }),
-}));
-
-/** Kolejność ma znaczenie tylko dla czytelności; reset testowy używa TRUNCATE ... CASCADE. */
+/** Wszystkie tabele (reset testowy: TRUNCATE ... CASCADE). Nową tabelę dopisz tutaj. */
 export const allTables = { user, session, account, verification, notes };

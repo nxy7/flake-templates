@@ -3,15 +3,14 @@
  * i dokłada /__test/reset. Odmawia startu poza NODE_ENV=test.
  */
 import { createDb, migrate } from "@app/db";
+import { TEST_ENV } from "@app/testing/api";
 import { createApp } from "./app";
 import { loadEnv } from "./env";
 import { createTestRoutes } from "./test-routes";
 
 const env = loadEnv({
-  DATABASE_URL: "pglite://memory",
+  ...TEST_ENV,
   API_URL: `http://localhost:${process.env.PORT ?? 3000}`,
-  BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-000",
-  TRUSTED_ORIGINS: "http://localhost:4173,http://localhost:5173",
   ...process.env,
 });
 if (env.NODE_ENV !== "test") {

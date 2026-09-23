@@ -10,7 +10,7 @@
     "e2e": "playwright test",
     "cap:sync": "cap sync",
     "android:debug": "cap sync android && cd android && ./gradlew assembleDebug --no-daemon -q",
-    "deploy:worker": "wrangler deploy"
+    "check:worker": "WRANGLER_SEND_METRICS=false wrangler deploy --dry-run --env staging"
   },
   "dependencies": {
     "@app/shared": "workspace:*",
