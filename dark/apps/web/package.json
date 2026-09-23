@@ -1,0 +1,34 @@
+{
+  "name": "@app/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "dev": "vite",
+    "build": "vite build && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && bun scripts/prerender.ts",
+    "preview": "vite preview --port 4173 --strictPort",
+    "e2e": "playwright test",
+    "cap:sync": "cap sync",
+    "android:debug": "cap sync android && cd android && ./gradlew assembleDebug --no-daemon -q",
+    "deploy:worker": "wrangler deploy"
+  },
+  "dependencies": {
+    "@app/shared": "workspace:*",
+    "@capacitor/core": "^8.5.2",
+    "@solidjs/router": "^1.0.0",
+    "better-auth": "^1.7.5",
+    "hono": "^4.13.8",
+    "solid-js": "^1.9.15"
+  },
+  "devDependencies": {
+    "@app/api": "workspace:*",
+    "@app/testing": "workspace:*",
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@playwright/test": "^1.63.0",
+    "vite": "^8.3.0",
+    "vite-plugin-solid": "^2.11.14",
+    "wrangler": "^4.136.3"
+  }
+}

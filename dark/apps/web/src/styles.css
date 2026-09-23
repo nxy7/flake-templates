@@ -1,0 +1,136 @@
+:root {
+  --bg: #fbfaf7;
+  --fg: #1d1b18;
+  --muted: #6b665e;
+  --line: #e6e1d8;
+  --accent: #2f6b4f;
+  --accent-fg: #ffffff;
+  --danger: #a33a2b;
+  --radius: 10px;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.5;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+html.spa-fallback #root {
+  visibility: hidden;
+}
+a {
+  color: var(--accent);
+}
+.shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+}
+.nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-top: env(safe-area-inset-top);
+  margin-bottom: 32px;
+}
+.nav .brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--fg);
+  margin-right: auto;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+.lead {
+  color: var(--muted);
+  font-size: 1.125rem;
+  max-width: 56ch;
+}
+.btn {
+  display: inline-block;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn.secondary {
+  background: transparent;
+  color: var(--accent);
+}
+.btn.danger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+form.stack,
+.stack {
+  display: grid;
+  gap: 12px;
+}
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+input,
+textarea {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--fg);
+}
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.error {
+  color: var(--danger);
+  margin: 0;
+}
+.notes {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: grid;
+  gap: 12px;
+}
+.note {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: #fff;
+}
+.note h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+.note p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.empty {
+  color: var(--muted);
+}

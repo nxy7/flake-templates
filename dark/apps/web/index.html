@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Factory Template</title>
+    <meta name="description" content="Szablon aplikacji: web + Android + iOS z jednego kodu." />
+    <!-- Prerenderowany HTML jest właściwy tylko dla swojej ścieżki. Na innej (fallback SPA)
+         ukrywamy go do czasu renderu klienta, żeby nie mignęła treść strony marketingowej. -->
+    <script>
+      (() => {
+        var r = document.documentElement.getAttribute("data-route");
+        var p = location.pathname.replace(/\/+$/, "") || "/";
+        if (r && r !== p) {
+          document.documentElement.classList.add("spa-fallback");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
