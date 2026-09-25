@@ -53,9 +53,10 @@ jobs:
   verify:
     name: bun run verify
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
+      - uses: ./.github/actions/free-disk
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: nix-community/cache-nix-action@v7
         with:
@@ -155,9 +156,10 @@ jobs:
     needs: [secrets, verify]
     if: needs.secrets.outputs.android_signing == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
+      - uses: ./.github/actions/free-disk
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: nix-community/cache-nix-action@v7
         with:
