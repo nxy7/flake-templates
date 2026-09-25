@@ -4,6 +4,7 @@ import { en, pl } from "./messages";
 /** Landing: statyczny HTML (SEO) z prawdziwymi nagłówkami i linkami, w każdym języku. */
 test("landing is real HTML without JS: h1, links, title, description", async ({ browser, request }) => {
   const html = await (await request.get("/")).text();
+  expect(html).toMatch(/<html\s+lang="en"/);
   expect(html).toContain(en.hero_lead);
   expect(html).toMatch(new RegExp(`<title[^>]*>${en.meta_home_title}</title>`));
   expect(html).toContain(en.meta_home_description);
@@ -16,6 +17,7 @@ test("landing is real HTML without JS: h1, links, title, description", async ({ 
 
 test("Polish landing has its own static HTML under /pl", async ({ request }) => {
   const html = await (await request.get("/pl")).text();
+  expect(html).toMatch(/<html\s+lang="pl"/);
   expect(html).toContain(pl.hero_lead);
   expect(html).toMatch(new RegExp(`<title[^>]*>${pl.meta_home_title}</title>`));
   const about = await (await request.get("/pl/about")).text();
