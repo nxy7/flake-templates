@@ -114,7 +114,8 @@ jobs:
 
   ios:
     name: iOS (build bez podpisu)
-    runs-on: macos-15
+    # Expo SDK 57 / RN 0.86 wymagają toolchainu Xcode 26 (macos-15 ma domyślnie 16.4 -> błąd Swift w ExpoLogBox).
+    runs-on: macos-26
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
@@ -129,6 +130,7 @@ jobs:
       - name: xcodebuild (symulator, CODE_SIGNING_ALLOWED=NO)
         run: |
           set -o pipefail
+          xcodebuild -version
           xcodebuild -workspace apps/app/ios/Notebook.xcworkspace -scheme Notebook -configuration Debug \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build/ios CODE_SIGNING_ALLOWED=NO build | tail -n 30
