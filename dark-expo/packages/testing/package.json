@@ -1,0 +1,21 @@
+{
+  "name": "@app/testing",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./db": "./src/db.ts",
+    "./api": "./src/api.ts",
+    "./playwright": "./src/playwright.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@app/db": "workspace:*",
+    "@electric-sql/pglite": "^0.5.8",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

@@ -20,6 +20,15 @@
         Reguły dla agentów: AGENTS.md.
       '';
     };
+    templates.dark-expo = {
+      path = ./dark-expo;
+      description =
+        "Dark factory, natywne UI: Bun + Hono + Drizzle/PostgreSQL (PGlite w testach) + Expo (iOS, Android, web)";
+      welcomeText = ''
+        Szablon "dark-expo". Start: direnv allow && bun install && bun run verify.
+        Reguły dla agentów: AGENTS.md, wzorce frontu: docs/expo.md.
+      '';
+    };
     templates.direnv = {
       path = ./direnv;
       description = "My main way to init new projects atm";

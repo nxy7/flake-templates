@@ -1,0 +1,22 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { I18nProvider } from "../src/lib/i18n";
+import { color } from "../src/theme";
+
+/** Korzeń: dostawcy (dane, i18n, safe area) + stos nawigacji. Jedyne miejsce montowania providerów. */
+export default function RootLayout() {
+  const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: 1 } } }));
+  return (
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: color.paper } }} />
+        </I18nProvider>
+      </QueryClientProvider>
+    </SafeAreaProvider>
+  );
+}
